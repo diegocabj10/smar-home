@@ -13,7 +13,7 @@ namespace WebApplication1.Controllers
 {
     public class EventosController : Controller
     {
-        // GET: Eventos   -- TEST CLAUDIO nuevo nuevo
+        // GET: Eventos
         public ActionResult Index()
         {
             return View();

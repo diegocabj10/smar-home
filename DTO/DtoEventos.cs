@@ -12,7 +12,7 @@ namespace DTO
         public int Id_Evento { get; set; }
         public int Id_Arduino { get; set; }
         public int Id_Senal { get; set; }
-        public int N_Valor { get; set; }
+        public int Valor { get; set; }
         public DateTime Fecha_Evento { get; set; }
     }
 }

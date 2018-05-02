@@ -35,11 +35,7 @@ namespace AccesoDatos
                     ConexionString = null;
                     conexionBD = null;
                     return conexionBD;
-                }
-
-
-
-
+                }           
             }
 
             /// <summary>
@@ -76,11 +72,7 @@ namespace AccesoDatos
             {
                 return Convert.ToInt32(ejecutarComandos.ExecuteScalar());
             }
-
-
-
-
-
+        
             /// <summary>
             /// Cierra la conexion de la BD.
             /// </summary>

@@ -41,7 +41,7 @@ namespace Negocio
                     evento.Id_Evento = (int)leerBD["id_evento"];
                     evento.Id_Arduino = (int)leerBD["id_arduino"];
                     evento.Id_Senal = (int)leerBD["id_senal"];
-                    evento.N_Valor = (int)leerBD["n_valor"];
+                    evento.Valor = (int)leerBD["valor"];
                     if (leerBD["fecha_evento"] != DBNull.Value) { evento.Fecha_Evento = (DateTime)leerBD["fecha_evento"]; }
                     //    cliente.pais = leerBD["descripcion"].ToString();
                     //  cliente.telefono = (int)leerBD["telefono"];
@@ -92,7 +92,7 @@ namespace Negocio
                 acceso.storedProcedure("pr_eventos_g");
                 acceso.agregarParametros("id_arduino", dtoNuevo.Id_Arduino);
                 acceso.agregarParametros("id_senal", dtoNuevo.Id_Senal);
-                acceso.agregarParametros("n_valor", dtoNuevo.N_Valor);
+                acceso.agregarParametros("valor", dtoNuevo.Valor);
                 acceso.executeNonQuery();
             }
             catch (Exception ex)
