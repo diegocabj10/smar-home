@@ -52,11 +52,7 @@ namespace WebApplication1.Controllers
             //});
 
         }
-        /* 
-         * 
-         * AGREGADO POR FRANCO - DESDE
-         *   
-        */
+     
         [HttpPost]
         public ActionResult RecibirEvento(int? id)
         {
@@ -82,11 +78,7 @@ namespace WebApplication1.Controllers
             }
 
         }
-        /* 
-           * 
-           * AGREGADO POR FRANCO - HASTA
-           *   
-          */
+       
         //// GET: Eventos/Details/5
         //public ActionResult Details(int id)
         //{
