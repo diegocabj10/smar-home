@@ -16,19 +16,17 @@
     @*GrillaListado*@
     <div ng-show="vm.Lista.length">
         <table id="tbAbm" class="table table-bordered">
-            <tr class="styleGrillaTitulo">
-                <th class="text-center">Id Evento</th>
+            <tr class="styleGrillaTitulo">               
                 <th class="text-center">Id Arduino</th>
-                <th class="text-center">Id Señal</th>
+                <th class="text-center">Señal</th>
                 <th class="text-center">Valor</th>
-                <th class="text-center">Fecha Evento</th>
+                <th class="text-center">Fecha Notifiacion</th>
             </tr>
             <tr ng-repeat="dto in vm.Lista">
-                <td>{{dto.Id_Evento}}</td>
                 <td>{{dto.Id_Arduino}}</td>
-                <td>{{dto.Id_Senal}}</td>
+                <td>{{dto.V_Descripcion_Senal}}</td>
                 <td>{{dto.Valor}}</td>
-                <td>{{dto.Fecha_Evento}}</td>
+                <td>{{dto.Fecha_Notificacion}}</td>
             </tr>
         </table>
     </div>

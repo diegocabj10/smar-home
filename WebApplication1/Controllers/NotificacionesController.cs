@@ -20,11 +20,11 @@ namespace WebApplication1.Controllers
         [JsonFechasStringFilter]
         public JsonResult Buscar()
         {
-            List<DtoEventos> a = new List<DtoEventos>();
+            List<DtoNotificaciones> a = new List<DtoNotificaciones>();
             string _mensaje = "";
             try
             {
-                a = RepositorioEventos.ObtenerEventos();
+                a = RepositorioNotificaciones.ObtenerNotificaciones();
 
             }
             catch (Exception ex)

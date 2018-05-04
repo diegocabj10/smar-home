@@ -6,12 +6,13 @@ using System.Threading.Tasks;
 
 namespace DTO
 {
-    public class DtoEventos
-    {
-        public int Id_Evento { get; set; }
+    public class DtoNotificaciones
+    {        
+        public int Id_Notificacion { get; set; }
         public int Id_Arduino { get; set; }
         public int Id_Senal { get; set; }
+        public string V_Descripcion_Senal { get; set; }
         public int Valor { get; set; }
-        public DateTime Fecha_Evento { get; set; }
+        public DateTime Fecha_Notificacion { get; set; }
     }
 }
