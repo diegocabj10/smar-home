@@ -77,5 +77,43 @@ namespace Negocio
             return listaNotificaciones;
         }
 
+        public static void Guardar(DtoEventos dtoNuevo)
+        {
+            Acceso acceso = new Acceso();
+            try
+            {
+                acceso.conectarBD();
+                acceso.storedProcedure("pr_notificaciones_g");
+                acceso.agregarParametros("id_arduino", dtoNuevo.Id_Arduino);
+                acceso.agregarParametros("id_senal", dtoNuevo.Id_Senal);
+                acceso.agregarParametros("valor", dtoNuevo.Valor);
+                acceso.agregarParametros("fecha_notificacion", dtoNuevo.Fecha_Evento);
+                acceso.executeNonQuery();
+            }
+            catch (Exception ex)
+            {
+                var a = "Error message: " + ex.Message;
+
+                if (ex.InnerException != null)
+                {
+                    a = a + " Inner exception: " + ex.InnerException.Message;
+                }
+
+                a = a + " Stack trace: " + ex.StackTrace;
+
+                System.ArgumentException bdEX = new System.ArgumentException("Mensaje: " + a, ex);
+
+
+                throw bdEX;
+
+            }
+
+            finally
+            {
+                acceso.closeConexion();
+            }
+
+        }
+
     }
 }
