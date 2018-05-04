@@ -8,51 +8,20 @@ using DTO;
 using System.Web.Helpers;
 using System.IO;
 using System.Net;
+using System.Web.Security;
+using System.Configuration;
 
 namespace WebApplication1.Controllers
 {
     public class EventosController : Controller
     {
-        // GET: Eventos
-        public ActionResult Index()
-        {
-            return View();
-        }
-        [JsonFechasStringFilter]
-        public JsonResult Buscar()
-        {
-            List<DtoEventos> a = new List<DtoEventos>();
-            string _mensaje = "";
-            try
-            {
-                a = RepositorioEventos.ObtenerEventos();
-               
-            }
-            catch (Exception ex)
-            {
-                _mensaje = ex.Message;
-            }
+        //// GET: Eventos
+        //public ActionResult Index()
+        //{
+        //    return View();
+        //}
+      
 
-
-            return Json(new { Lista = a, Salida = _mensaje });
-            //var listaEventos = new List<DtoEventos>();
-
-            //DtoEventos evento = new DtoEventos();
-            //evento.Id_Evento = 2;
-            //evento.Id_Arduino = 2;
-            //evento.Id_Senal = 2;
-            //evento.N_Valor = 2;
-            //evento.Fecha_Evento = DateTime.Today;
-            //evento.TotalRegistrosListado = 10;
-            //listaEventos.Add(evento);
-
-            //return Json(new
-            //{
-            //    Lista = listaEventos
-            //});
-
-        }
-     
         [HttpPost]
         public ActionResult RecibirEvento(int? id)
         {
@@ -61,12 +30,16 @@ namespace WebApplication1.Controllers
             req.Seek(0, System.IO.SeekOrigin.Begin);
             string json = new StreamReader(req).ReadToEnd();
 
-
             string _mensaje = "";
             try
             {
 
                 DtoEventos evento = Newtonsoft.Json.JsonConvert.DeserializeObject<DtoEventos>(json);
+                if (evento.Id_Senal == 1 && evento.Id_Senal == 1) //Si la señal es de luz y es cuando vuelve
+                {
+                    System.Web.HttpContext.Current.Cache.Insert("NotifacionLuz" + evento.Id_Arduino, evento, null, DateTime.Now.AddMinutes(3), System.Web.Caching.Cache.NoSlidingExpiration);
+                }
+                evento.Fecha_Evento = DateTime.Now;
                 RepositorioEventos.Guardar(evento);
                 return new HttpStatusCodeResult(HttpStatusCode.Created);
 
@@ -78,7 +51,7 @@ namespace WebApplication1.Controllers
             }
 
         }
-       
+
         //// GET: Eventos/Details/5
         //public ActionResult Details(int id)
         //{
@@ -152,58 +125,7 @@ namespace WebApplication1.Controllers
         //}
 
 
-        public class JsonFechasStringFilterAttribute : ActionFilterAttribute
-        {
-            public override void OnActionExecuted(ActionExecutedContext filterContext)
-            {
-                if (filterContext.Result is JsonResult == false)
-                    return;
-
-                filterContext.Result = new JsonNetResult((JsonResult)filterContext.Result);
-            }
-
-            private class JsonNetResult : JsonResult
-            {
-                public JsonNetResult(JsonResult jsonResult)
-                {
-                    this.ContentEncoding = jsonResult.ContentEncoding;
-                    this.ContentType = jsonResult.ContentType;
-                    this.Data = jsonResult.Data;
-                    this.JsonRequestBehavior = jsonResult.JsonRequestBehavior;
-                    //this.MaxJsonLength = jsonResult.MaxJsonLength;
-                    //this.RecursionLimit = jsonResult.RecursionLimit;
-                }
-
-                public override void ExecuteResult(ControllerContext context)
-                {
-                    if (context == null)
-                        throw new ArgumentNullException("context");
-
-                    if (this.JsonRequestBehavior == JsonRequestBehavior.DenyGet
-                        && String.Equals(context.HttpContext.Request.HttpMethod, "GET", StringComparison.OrdinalIgnoreCase))
-                        throw new InvalidOperationException("GET not allowed! Change JsonRequestBehavior to AllowGet.");
-
-                    var response = context.HttpContext.Response;
-
-                    response.ContentType = String.IsNullOrEmpty(this.ContentType) ? "application/json" : this.ContentType;
-
-                    if (this.ContentEncoding != null)
-                        response.ContentEncoding = this.ContentEncoding;
-
-                    if (Data != null)
-                    {
-                        // Using Json.NET serializer
-                        var isoConvert = new Newtonsoft.Json.Converters.IsoDateTimeConverter();
-                        const string _dateFormat = "dd/MM/yyyy HH:mm:ss";
-                        isoConvert.DateTimeFormat = _dateFormat;
-                        response.Write(Newtonsoft.Json.JsonConvert.SerializeObject(Data, isoConvert));
-                    }
-                }
-            }
-
-
-        }
-
+    
 
 
     }

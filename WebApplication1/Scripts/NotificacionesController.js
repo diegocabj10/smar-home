@@ -28,7 +28,7 @@ myApp.controller('myCtrl', ['$scope', '$http', '$interval',
         //Buscar segun los filtros, establecidos en DtoFiltro
         vm.Buscar = function () {
             $interval(function () {
-                $http.post('/Eventos/Buscar') //DtoFiltro: vm.DtoFiltro
+                $http.post('/Notificaciones/Buscar') //DtoFiltro: vm.DtoFiltro
                     .then(
                     function (successResponse) {
                         vm.Lista = successResponse.data.Lista;

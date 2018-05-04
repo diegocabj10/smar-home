@@ -1,18 +1,14 @@
 ﻿
-@{
-    ViewBag.Title = "Eventos";
-}
+
 @section Scripts {
-    <script src="/Scripts/EventosController.js"></script>
+    <script src="/Scripts/NotificacionesController.js"></script>
 }
 
 <div ng-app="myApp" ng-controller="myCtrl as vm">
 
     <div class="botones">
         <button class="btn btn-primary" ng-click="vm.Buscar();"><span class="glyphicon glyphicon-search"> </span> Consultar</button>
-        <button class="btn btn-primary" ng-click="vm.Configurar_Arduino();"><span class="glyphicon glyphicon-search"> </span> Configurar Arduino</button>
-        @*<button class="btn btn-primary" ng-click="vm.Grabar();"><span class="glyphicon glyphicon-search"> </span> Grabar</button>*@
-        @*TEST COMMIT FRANCO*@
+
     </div>
     <div class="alert alert-info">
         <span class="glyphicon glyphicon-exclamation-sign"></span>Registros: {{vm.Lista.length}}

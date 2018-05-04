@@ -93,6 +93,7 @@ namespace Negocio
                 acceso.agregarParametros("id_arduino", dtoNuevo.Id_Arduino);
                 acceso.agregarParametros("id_senal", dtoNuevo.Id_Senal);
                 acceso.agregarParametros("valor", dtoNuevo.Valor);
+                acceso.agregarParametros("fecha_evento", dtoNuevo.Fecha_Evento);
                 acceso.executeNonQuery();
             }
             catch (Exception ex)
