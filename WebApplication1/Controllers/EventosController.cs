@@ -25,22 +25,48 @@ namespace WebApplication1.Controllers
         [HttpPost]
         public ActionResult RecibirEvento(int? id)
         {
-
+            System.Web.Caching.CacheItemRemovedCallback callback = new System.Web.Caching.CacheItemRemovedCallback(OnRemove);
             Stream req = Request.InputStream;
             req.Seek(0, System.IO.SeekOrigin.Begin);
             string json = new StreamReader(req).ReadToEnd();
 
             string _mensaje = "";
+            int tiempoEnCache = 5; //Este es el que hay que traer de la tabla de config (expresado en minutos)..
+           
             try
             {
 
                 DtoEventos evento = Newtonsoft.Json.JsonConvert.DeserializeObject<DtoEventos>(json);
-                if (evento.Id_Senal == 1 && evento.Id_Senal == 1) //Si la señal es de luz y es cuando vuelve
+                int tiempo = RepositorioConfiguraciones.ObtenerTiempoDelay(evento.Id_Arduino, evento.Id_Senal);
+                if (tiempo != -1) tiempoEnCache = tiempo;
+                if (evento.Id_Senal == 1 ) //Si la señal es de luz lo manejo, sino lo guardo de una..
                 {
-                    System.Web.HttpContext.Current.Cache.Insert("NotifacionLuz" + evento.Id_Arduino, evento, null, DateTime.Now.AddMinutes(3), System.Web.Caching.Cache.NoSlidingExpiration);
+                    if (estaEnCache("NotifacionLuz" + evento.Id_Arduino))
+                    {
+                        System.Web.HttpContext.Current.Cache.Remove("NotifacionLuz" + evento.Id_Arduino);
+                        if (evento.Valor == 1)
+                            
+                            System.Web.HttpContext.Current.Cache.Insert("NotifacionLuz" + evento.Id_Arduino, evento, null, DateTime.Now.AddMinutes(tiempoEnCache), System.Web.Caching.Cache.NoSlidingExpiration, System.Web.Caching.CacheItemPriority.Default, callback);
+                    }
+                    else
+                    {
+                        if (evento.Valor == 1)
+                        System.Web.HttpContext.Current.Cache.Insert("NotifacionLuz" + evento.Id_Arduino, evento, null, DateTime.Now.AddMinutes(tiempoEnCache), System.Web.Caching.Cache.NoSlidingExpiration, System.Web.Caching.CacheItemPriority.Default, callback);
+                        else
+                        {
+                            evento.Fecha_Evento = DateTime.Now;
+                            RepositorioEventos.Guardar(evento);
+                        }
+                    }
+                   
+                    
                 }
-                evento.Fecha_Evento = DateTime.Now;
-                RepositorioEventos.Guardar(evento);
+                else
+                {
+                    evento.Fecha_Evento = DateTime.Now;
+                    RepositorioEventos.Guardar(evento);
+                }
+             
                 return new HttpStatusCodeResult(HttpStatusCode.Created);
 
             }
@@ -50,6 +76,29 @@ namespace WebApplication1.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
 
+        }
+
+        public Boolean estaEnCache(String keyCache)
+        {
+            DtoEventos eventoEnCache=(DtoEventos) System.Web.HttpContext.Current.Cache.Get(keyCache);
+            if (eventoEnCache == null) return false;
+            else return true;
+          
+        }
+
+        public static void OnRemove(string key,
+                                       object cacheItem,
+                                       System.Web.Caching.CacheItemRemovedReason reason)
+        {
+            String test = reason.ToString();
+            if (reason.ToString() == "Expired")
+            {
+                DtoEventos evento = (DtoEventos)cacheItem;
+                evento.Fecha_Evento = DateTime.Now;
+                RepositorioEventos.Guardar(evento);
+
+            }
+            test += " test";
         }
 
         //// GET: Eventos/Details/5
@@ -125,7 +174,7 @@ namespace WebApplication1.Controllers
         //}
 
 
-    
+
 
 
     }
