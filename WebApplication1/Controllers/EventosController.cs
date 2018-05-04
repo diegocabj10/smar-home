@@ -16,10 +16,11 @@ namespace WebApplication1.Controllers
     public class EventosController : Controller
     {
         //// GET: Eventos
-        //public ActionResult Index()
-        //{
-        //    return View();
-        //}
+        public ActionResult Index()
+        {
+            ViewBag.Title = "Eventos";
+            return View();
+        }
       
 
         [HttpPost]
@@ -117,6 +118,41 @@ namespace WebApplication1.Controllers
 
             }
             
+        }
+
+        [JsonFechasStringFilter]
+        public JsonResult Buscar()
+        {
+            List<DtoEventos> a = new List<DtoEventos>();
+            string _mensaje = "";
+            try
+            {
+                a = RepositorioEventos.ObtenerEventos();
+
+            }
+            catch (Exception ex)
+            {
+                _mensaje = ex.Message;
+            }
+
+
+            return Json(new { Lista = a, Salida = _mensaje });
+            //var listaEventos = new List<DtoEventos>();
+
+            //DtoEventos evento = new DtoEventos();
+            //evento.Id_Evento = 2;
+            //evento.Id_Arduino = 2;
+            //evento.Id_Senal = 2;
+            //evento.N_Valor = 2;
+            //evento.Fecha_Evento = DateTime.Today;
+            //evento.TotalRegistrosListado = 10;
+            //listaEventos.Add(evento);
+
+            //return Json(new
+            //{
+            //    Lista = listaEventos
+            //});
+
         }
 
         //// GET: Eventos/Details/5
