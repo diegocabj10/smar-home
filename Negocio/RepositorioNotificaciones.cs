@@ -77,7 +77,7 @@ namespace Negocio
             return listaNotificaciones;
         }
 
-        public static void Guardar(DtoEventos dtoNuevo)
+        public static void Guardar(DtoNotificaciones dtoNuevo)
         {
             Acceso acceso = new Acceso();
             try
@@ -87,7 +87,7 @@ namespace Negocio
                 acceso.agregarParametros("id_arduino", dtoNuevo.Id_Arduino);
                 acceso.agregarParametros("id_senal", dtoNuevo.Id_Senal);
                 acceso.agregarParametros("valor", dtoNuevo.Valor);
-                acceso.agregarParametros("fecha_notificacion", dtoNuevo.Fecha_Evento);
+                acceso.agregarParametros("fecha_notificacion", dtoNuevo.Fecha_Notificacion);
                 acceso.executeNonQuery();
             }
             catch (Exception ex)

@@ -79,14 +79,19 @@ namespace WebApplication1.Controllers
 
         public void guardarEvento(DtoEventos evento)
         {
+            
             evento.Fecha_Evento = DateTime.Now;
             RepositorioEventos.Guardar(evento);
         }
 
         public static void guardarNotificacion(DtoEventos evento)
         {
-            evento.Fecha_Evento = DateTime.Now;
-            RepositorioNotificaciones.Guardar(evento);
+            DtoNotificaciones notificacion = new DtoNotificaciones();
+            notificacion.Id_Arduino = evento.Id_Arduino;
+            notificacion.Id_Senal = evento.Id_Senal;
+            notificacion.Valor = evento.Valor;
+            notificacion.Fecha_Notificacion = DateTime.Now;
+            RepositorioNotificaciones.Guardar(notificacion);
             //Aca va la llamada a la funcion que envia el correo...
         }
 
