@@ -12,7 +12,7 @@ using System.Web.Security;
 using System.Configuration;
 using System.Threading;
 using System.Globalization;
-
+using System.Net.Mail;
 namespace WebApplication1.Controllers
 {
     public class EventosController : Controller
@@ -23,7 +23,7 @@ namespace WebApplication1.Controllers
             ViewBag.Title = "Eventos";
             return View();
         }
-      
+
 
         [HttpPost]
         public ActionResult RecibirEvento(int? id)
@@ -35,7 +35,7 @@ namespace WebApplication1.Controllers
 
             string _mensaje = "";
             int tiempoEnCache = 5; //Si no lo encuentra por defecto son 5 (expresado en minutos)..
-           
+
             try
             {
 
@@ -43,32 +43,32 @@ namespace WebApplication1.Controllers
                 int tiempo = RepositorioConfiguraciones.ObtenerTiempoDelay(evento.Id_Arduino, evento.Id_Senal);
                 guardarEvento(evento); //Todos los eventos se guardan
                 if (tiempo != -1) tiempoEnCache = tiempo;
-                if (evento.Id_Senal == 1 ) //Si la señal es de luz lo manejo, sino lo guardo de una..
+                if (evento.Id_Senal == 1) //Si la señal es de luz lo manejo, sino lo guardo de una..
                 {
                     if (estaEnCache("NotifacionLuz" + evento.Id_Arduino))
                     {
                         System.Web.HttpContext.Current.Cache.Remove("NotifacionLuz" + evento.Id_Arduino);
-                        if (evento.Valor == 1) 
+                        if (evento.Valor == 1)
                             System.Web.HttpContext.Current.Cache.Insert("NotifacionLuz" + evento.Id_Arduino, evento, null, DateTime.Now.AddMinutes(tiempoEnCache), System.Web.Caching.Cache.NoSlidingExpiration, System.Web.Caching.CacheItemPriority.Default, callback);
                     }
                     else
                     {
                         if (evento.Valor == 1)
-                        System.Web.HttpContext.Current.Cache.Insert("NotifacionLuz" + evento.Id_Arduino, evento, null, DateTime.Now.AddMinutes(tiempoEnCache), System.Web.Caching.Cache.NoSlidingExpiration, System.Web.Caching.CacheItemPriority.Default, callback);
+                            System.Web.HttpContext.Current.Cache.Insert("NotifacionLuz" + evento.Id_Arduino, evento, null, DateTime.Now.AddMinutes(tiempoEnCache), System.Web.Caching.Cache.NoSlidingExpiration, System.Web.Caching.CacheItemPriority.Default, callback);
                         else
                         {
                             guardarNotificacion(evento);
-                           
+
                         }
                     }
-                   
-                    
+
+
                 }
                 else
                 {
                     guardarNotificacion(evento);
                 }
-             
+
                 return new HttpStatusCodeResult(HttpStatusCode.Created);
 
             }
@@ -94,15 +94,15 @@ namespace WebApplication1.Controllers
             notificacion.Valor = evento.Valor;
             notificacion.Fecha_Notificacion = TimeZoneInfo.ConvertTime(DateTime.Now, TimeZoneInfo.FindSystemTimeZoneById("Argentina Standard Time"));
             RepositorioNotificaciones.Guardar(notificacion);
-            //Aca va la llamada a la funcion que envia el correo...
+            enviarCorreoNotificacion(notificacion);
         }
 
         private Boolean estaEnCache(String keyCache)
         {
-            DtoEventos eventoEnCache=(DtoEventos) System.Web.HttpContext.Current.Cache.Get(keyCache);
+            DtoEventos eventoEnCache = (DtoEventos)System.Web.HttpContext.Current.Cache.Get(keyCache);
             if (eventoEnCache == null) return false;
             else return true;
-          
+
         }
 
         private static void OnRemove(string key,
@@ -113,87 +113,46 @@ namespace WebApplication1.Controllers
             if (reason.ToString() == "Expired")
             {
                 DtoEventos evento = (DtoEventos)cacheItem;
-                
+
                 guardarNotificacion(evento);
-               
+
 
             }
-            
+
         }
 
-    
 
-        //// GET: Eventos/Details/5
-        //public ActionResult Details(int id)
-        //{
-        //    return View();
-        //}
 
-        //// GET: Eventos/Create
-        //public ActionResult Create()
-        //{
-        //    return View();
-        //}
+        public static void enviarCorreoNotificacion(DtoNotificaciones dto)
+        {
 
-        //// POST: Eventos/Create
-        //[HttpPost]
-        //public ActionResult Create(FormCollection collection)
-        //{
-        //    try
-        //    {
-        //        // TODO: Add insert logic here
+            MailMessage mail = new MailMessage();
+            mail.From = new System.Net.Mail.MailAddress("someesmarthome@gmail.com");
 
-        //        return RedirectToAction("Index");
-        //    }
-        //    catch
-        //    {
-        //        return View();
-        //    }
-        //}
+            SmtpClient smtp = new SmtpClient();
+            smtp.Port = 587;   //  465 
+            smtp.EnableSsl = true;
+            smtp.DeliveryMethod = SmtpDeliveryMethod.Network;
+            smtp.UseDefaultCredentials = false;
+            smtp.Credentials = new NetworkCredential("someesmarthome@gmail.com", "viaje1234");
+            smtp.Host = "smtp.gmail.com";
+            //Hay que parametrizar las cuentas a enviar, y los mensajes segun señal y valor
+            mail.To.Add(new MailAddress("diegocampos0909@gmail.com"));
+            mail.IsBodyHtml = true;
+      
+            string st = @"<html>
+<head>
+<title>Querido vecino</title>
+</head>
+<body> 
+<h1>Volvio la luz</h1>
+<p>Smart-Home</p>
+</body>
+</html>";
+            mail.Body = st;
+            smtp.Send(mail);
 
-        //// GET: Eventos/Edit/5
-        //public ActionResult Edit(int id)
-        //{
-        //    return View();
-        //}
-
-        //// POST: Eventos/Edit/5
-        //[HttpPost]
-        //public ActionResult Edit(int id, FormCollection collection)
-        //{
-        //    try
-        //    {
-        //        // TODO: Add update logic here
-
-        //        return RedirectToAction("Index");
-        //    }
-        //    catch
-        //    {
-        //        return View();
-        //    }
-        //}
-
-        //// GET: Eventos/Delete/5
-        //public ActionResult Delete(int id)
-        //{
-        //    return View();
-        //}
-
-        //// POST: Eventos/Delete/5
-        //[HttpPost]
-        //public ActionResult Delete(int id, FormCollection collection)
-        //{
-        //    try
-        //    {
-        //        // TODO: Add delete logic here
-
-        //        return RedirectToAction("Index");
-        //    }
-        //    catch
-        //    {
-        //        return View();
-        //    }
-        //}
+        }
 
 
 
