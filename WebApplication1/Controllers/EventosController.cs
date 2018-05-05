@@ -10,6 +10,8 @@ using System.IO;
 using System.Net;
 using System.Web.Security;
 using System.Configuration;
+using System.Threading;
+using System.Globalization;
 
 namespace WebApplication1.Controllers
 {
@@ -80,8 +82,7 @@ namespace WebApplication1.Controllers
 
         public void guardarEvento(DtoEventos evento)
         {
-            
-            evento.Fecha_Evento = DateTime.Now;
+            evento.Fecha_Evento = TimeZoneInfo.ConvertTime(DateTime.Now, TimeZoneInfo.FindSystemTimeZoneById("Argentina Standard Time"));
             RepositorioEventos.Guardar(evento);
         }
 
@@ -91,7 +92,7 @@ namespace WebApplication1.Controllers
             notificacion.Id_Arduino = evento.Id_Arduino;
             notificacion.Id_Senal = evento.Id_Senal;
             notificacion.Valor = evento.Valor;
-            notificacion.Fecha_Notificacion = DateTime.Now;
+            notificacion.Fecha_Notificacion = TimeZoneInfo.ConvertTime(DateTime.Now, TimeZoneInfo.FindSystemTimeZoneById("Argentina Standard Time"));
             RepositorioNotificaciones.Guardar(notificacion);
             //Aca va la llamada a la funcion que envia el correo...
         }
@@ -120,40 +121,7 @@ namespace WebApplication1.Controllers
             
         }
 
-        [JsonFechasStringFilter]
-        public JsonResult Buscar()
-        {
-            List<DtoEventos> a = new List<DtoEventos>();
-            string _mensaje = "";
-            try
-            {
-                a = RepositorioEventos.ObtenerEventos();
-
-            }
-            catch (Exception ex)
-            {
-                _mensaje = ex.Message;
-            }
-
-
-            return Json(new { Lista = a, Salida = _mensaje });
-            //var listaEventos = new List<DtoEventos>();
-
-            //DtoEventos evento = new DtoEventos();
-            //evento.Id_Evento = 2;
-            //evento.Id_Arduino = 2;
-            //evento.Id_Senal = 2;
-            //evento.N_Valor = 2;
-            //evento.Fecha_Evento = DateTime.Today;
-            //evento.TotalRegistrosListado = 10;
-            //listaEventos.Add(evento);
-
-            //return Json(new
-            //{
-            //    Lista = listaEventos
-            //});
-
-        }
+    
 
         //// GET: Eventos/Details/5
         //public ActionResult Details(int id)

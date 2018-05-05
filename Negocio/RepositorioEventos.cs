@@ -16,14 +16,14 @@ namespace Negocio
         //        select *
         //from INFORMATION_SCHEMA.COLUMNS
         //where TABLE_NAME='T_EVENTOS'
+        //SELECT OBJECT_DEFINITION(OBJECT_ID(N'PR_NOTIFICACIONES_SF'))
 
-
-//        CREATE TABLE T_EVENTOS(
-//ID_EVENTO int not null identity(1,1) unique,
-//ID_ARDUINO int,
-//ID_SENAL int,
-//N_VALOR int,
-//FECHA_EVENTO datetime );
+        //        CREATE TABLE T_EVENTOS(
+        //ID_EVENTO int not null identity(1,1) unique,
+        //ID_ARDUINO int,
+        //ID_SENAL int,
+        //N_VALOR int,
+        //FECHA_EVENTO datetime );
         public static List<DtoEventos> ObtenerEventos()
         {
             List<DtoEventos> listaEventos = new List<DtoEventos>();
