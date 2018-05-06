@@ -6,7 +6,10 @@ using System.Threading.Tasks;
 
 namespace DTO
 {
-    class DtoConfiguracion
+    public class DtoConfiguracion
     {
+        public int Id_Arduino { get; set; }        
+        public int Id_Senal { get; set; }
+        public int n_delay_alarma { get; set; }
     }
 }
