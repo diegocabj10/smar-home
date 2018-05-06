@@ -97,15 +97,22 @@ namespace Negocio
         }
 
         public static void ActualizarDelay(DtoConfiguracion dtoNuevo)
-        {            
-            Acceso acceso = new Acceso();
+        {
+
+            //CREATE PROCEDURE pr_ActualizarDelay_g @ID_ARDUINO int, @ID_SENAL int, @N_VALOR int AS
+            //    BEGIN
+            //    SET NOCOUNT ON
+            //    UPDATE t_conf_arduino SET N_DELAY_ALARMA = @N_VALOR WHERE ID_ARDUINO = @ID_ARDUINO and ID_SENAL = @ID_SENAL;
+            //END
+
+                        Acceso acceso = new Acceso();
             try
             {
                 acceso.conectarBD();
                 acceso.storedProcedure("pr_ActualizarDelay_g");
                 acceso.agregarParametros("id_arduino", dtoNuevo.Id_Arduino);
                 acceso.agregarParametros("id_senal", dtoNuevo.Id_Senal);
-                acceso.agregarParametros("valor", dtoNuevo.n_delay_alarma);                
+                acceso.agregarParametros("N_valor", dtoNuevo.n_delay_alarma);                
                 acceso.executeNonQuery();
             }
             catch (Exception ex)
