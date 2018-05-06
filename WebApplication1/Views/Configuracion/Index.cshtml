@@ -23,13 +23,18 @@
         </div>
         <div>
             <label> Seleccionar Arduino:  </label>
-            <select></select>
+            <select id=dto.Id_Arduino class="dropdown">
+                <option value={{dto.Id_Arduino}}></option>
+            </select>
             <div>
                 <label> Seleccionar Señal:  </label>
-                <select></select>
+                <select id="Id_Senal" class="dropdown">
+                    <option value="1"> Test1 </option>
+                    <option value="2"> Test2 </option>
+                </select>
             </div>
             <div>
-                <label>Retardo para infromar Alarma:  </label> <input />
+                <label>Retardo para informar Alarma:  </label> <input />
             </div>
             <div class="botones">
                 <button class="btn btn-primary" ng-click="vm.Agregar_Delay();"><span class="glyphicon glyphicon-save"> </span> Guardar</button>

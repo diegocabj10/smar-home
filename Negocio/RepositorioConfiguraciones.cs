@@ -54,6 +54,15 @@ namespace Negocio
 
         public static List<DtoConfiguracion> ObtenerIdArduino()
         {
+
+//            CREATE PROCEDURE pr_obtenerIdArduino_sf
+//AS
+//BEGIN
+//    SET NOCOUNT ON;
+//            SELECT ID_ARDUINO
+//            FROM T_arduino
+
+//    END
             List<DtoConfiguracion> listaEventos = new List<DtoConfiguracion>();
             Acceso acceso = new Acceso();
             try
