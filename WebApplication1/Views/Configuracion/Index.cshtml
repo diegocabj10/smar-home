@@ -22,10 +22,21 @@
             </table>
         </div>
         <div>
-            <label> Seleccionar Arduino:  </label>
-            <select id=dto.Id_Arduino class="dropdown">
-                <option value={{dto.Id_Arduino}}></option>
-            </select>
+            <div ng-app="myApp" ng-controller="myCtrl">
+
+                <label> Seleccionar Arduino:  </label>
+                
+                <select ng-model="selectedName" ng-options="item.id as item.valor for item in vm.arduinos"></select>
+
+                <script>
+                    var app = angular.module('myApp', []);
+                    app.controller('myCtrl', function ($scope) {
+                        $scope.names = dto.Id_Arduino;
+                    });
+                </script>
+
+            </div>
+
             <div>
                 <label> Seleccionar Señal:  </label>
                 <select id="Id_Senal" class="dropdown">
