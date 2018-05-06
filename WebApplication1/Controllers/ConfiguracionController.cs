@@ -70,10 +70,10 @@ namespace WebApplication1.Controllers
             return Json(new { Lista = a, Salida = _mensaje });
         }
 
-        //public void guardarDelay(DtoConfiguracion evento)
-        //{
-        //    RepositorioConfiguraciones.ActualizarDelay(evento);
-        //}
+        public void Guardar(DtoConfiguracion DtoConfig)
+        {
+            RepositorioConfiguraciones.ActualizarDelay(DtoConfig);
+        }
         //[JsonFechasStringFilter]
         //public JsonResult ActualizarDelay(DtoConfiguracion evento)
         //{

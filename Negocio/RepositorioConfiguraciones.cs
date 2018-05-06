@@ -97,10 +97,7 @@ namespace Negocio
         }
 
         public static void ActualizarDelay(DtoConfiguracion dtoNuevo)
-        {
-
-
-
+        {            
             Acceso acceso = new Acceso();
             try
             {

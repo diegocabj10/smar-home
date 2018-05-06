@@ -8,25 +8,17 @@ myApp.controller('myCtrl', ['$scope', '$http', '$interval',
     function EventosController($scope, $http, $interval) {
         var vm = this;
         vm.Controller = window.location.pathname + "/";
+        vm.guardado = false;
         ///**FUNCIONES**///
-
+        vm.Dto = {};
         vm.arduinos = [{ id: 1, valor: "1" }, { id: 2, valor: "2" }];
 
-        vm.senal = [{ id: 1, valor: "LUZ" }, { id: 2, valor: "GAS" }];
+        vm.senales = [{ id: 1, valor: "LUZ" }, { id: 2, valor: "GAS" }];
 
-        vm.Buscar = function () {
-            $interval(function () {
-                $http.post('/Configuracion/Buscar')
-                    .then(
-                    function (successResponse) {
-                        vm.Lista = successResponse.data.Lista;
-                    }
-                    );
-            }, 1000, 100
-            );
+
+        vm.Guardar = function () {
+        
+            $http.post('/Configuracion/Guardar', { DtoConfig: vm.Dto }); //Esto apunta directamente al controller con el mismo nombre de metodo, fijate que recibe un parametro DtoConf, es el qeu estas pasando y solo resuelve el bindeo
         };
-
-
-        vm.Agregar_Delay = vm.arduinos.id(); vm, senal.id();;
     }
 ]);

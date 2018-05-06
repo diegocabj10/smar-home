@@ -1,22 +1,25 @@
 ﻿@section Scripts {
     <script src="~/Scripts/ConfiguracionController.js"></script>
 }
-    <div ng-app="myApp" ng-controller="myCtrl as vm">
-
-            <label> Seleccionar Arduino:  </label>
-                <select ng-model="vm.dto.Id_Arduino" ng-options="item.id as item.valor for item in vm.arduinos"></select>
-            </div>
-
-            <div>
-                <label> Seleccionar Señal:  </label>
-                <select ng-model="vm.dto.Id_Id_Senal" ng-options="item.id as item.valor for item in vm.senal"></select>
-            </div>
-            <div>
-                <label>Retardo para informar Alarma:  </label> <input ng-model="vm.dto.n_delay_alarma" />
-            </div>
-            <div class="botones">
-                <button class="btn btn-primary" ng-click="vm.Agregar_Delay();"><span class="glyphicon glyphicon-save"> </span> Guardar</button>
-            </div>
-        </div>
+<form novalidate name="myForm" ng-app="myApp" ng-controller="myCtrl as vm">
+    <div>
+        <label> Seleccionar Arduino:  </label>
+        <select name="Id_Arduino" class="form-control" ng-model="vm.Dto.Id_Arduino" ng-options="item.id as item.valor for item in vm.arduinos" required></select>
+        <span class="alert-danger" ng-show="myForm.Id_Arduino.$error.required && vm.guardado">Debe seleccionar un arduino</span>
     </div>
+    <div>
+        <label> Seleccionar Señal:  </label>
+        <select name="Id_Senal" class="form-control" ng-model="vm.Dto.Id_Senal" ng-options="item.id as item.valor for item in vm.senales" required></select>
+        <span class="alert-danger" ng-show="myForm.Id_Senal.$error.required && vm.guardado">Debe seleccionar una señal</span>
+    </div>
+    <div>
+        <label>Retardo para informar Alarma:</label>
+        <input name="n_delay_alarma" class="form-control" type="number" min="0" max="5" ng-model="vm.Dto.n_delay_alarma" required />
+        <span class="alert-danger" ng-show="myForm.n_delay_alarma.$error.required && vm.guardado">Debe Ingresar un valor</span>
+    </div>
+
+    <div class="botones">
+        <button class="btn btn-primary" ng-click="vm.guardado=true; myForm.$valid && vm.Guardar();"><span class="glyphicon glyphicon-save"> </span> Guardar</button>
+    </div>
+</form>
 
