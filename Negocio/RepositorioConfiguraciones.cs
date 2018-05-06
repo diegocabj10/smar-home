@@ -95,5 +95,42 @@ namespace Negocio
             }
             return listaEventos;
         }
+
+        public static void ActualizarDelay(DtoConfiguracion dtoNuevo)
+        {
+
+
+
+            Acceso acceso = new Acceso();
+            try
+            {
+                acceso.conectarBD();
+                acceso.storedProcedure("pr_ActualizarDelay_g");
+                acceso.agregarParametros("id_arduino", dtoNuevo.Id_Arduino);
+                acceso.agregarParametros("id_senal", dtoNuevo.Id_Senal);
+                acceso.agregarParametros("valor", dtoNuevo.n_delay_alarma);                
+                acceso.executeNonQuery();
+            }
+            catch (Exception ex)
+            {
+                var a = "Error message: " + ex.Message;
+
+                if (ex.InnerException != null)
+                {
+                    a = a + " Inner exception: " + ex.InnerException.Message;
+                }
+
+                a = a + " Stack trace: " + ex.StackTrace;
+
+                System.ArgumentException bdEX = new System.ArgumentException("Mensaje: " + a, ex);
+                throw bdEX;
+            }
+
+            finally
+            {
+                acceso.closeConexion();
+            }
+
+        }
     }
 }

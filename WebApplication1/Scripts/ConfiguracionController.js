@@ -10,18 +10,9 @@ myApp.controller('myCtrl', ['$scope', '$http', '$interval',
         vm.Controller = window.location.pathname + "/";
         ///**FUNCIONES**///
 
-        //vm.arduinos = [{ id:1, valor: "arduino1" }, { id: 2, valor: "arduino2" }];
-        vm.arduinos = function () {
-                $interval(function () {
-                    $http.post('/Configuracion/arduinos')
-                        .then(
-                        function (successResponse) {
-                            vm.arduinos = successResponse.data.Lista;
-                        }
-                        );
-                }, 1000, 100
-                );
-        };
+        vm.arduinos = [{ id: 1, valor: "1" }, { id: 2, valor: "2" }];
+
+        vm.senal = [{ id: 1, valor: "LUZ" }, { id: 2, valor: "GAS" }];
 
         vm.Buscar = function () {
             $interval(function () {
@@ -34,5 +25,8 @@ myApp.controller('myCtrl', ['$scope', '$http', '$interval',
             }, 1000, 100
             );
         };
+
+
+        vm.Agregar_Delay = vm.arduinos.id(); vm, senal.id();;
     }
 ]);

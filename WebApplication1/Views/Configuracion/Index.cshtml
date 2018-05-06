@@ -1,51 +1,18 @@
-﻿
-
-@section Scripts {
+﻿@section Scripts {
     <script src="~/Scripts/ConfiguracionController.js"></script>
 }
-
     <div ng-app="myApp" ng-controller="myCtrl as vm">
 
-        <div class="botones">
-            <button class="btn btn-primary" ng-click="vm.Buscar();"><span class="glyphicon glyphicon-search"> </span> test</button>
-        </div>
-
-        @*GrillaListado*@
-        <div ng-show="vm.Lista.length">
-            <table id="tbAbm" class="table table-bordered">
-                <tr class="styleGrillaTitulo">
-                    <th class="text-center">Id Arduino</th>
-                </tr>
-                <tr ng-repeat="dto in vm.Lista">
-                    <td>{{dto.Id_Arduino}}</td>
-                </tr>
-            </table>
-        </div>
-        <div>
-            <div ng-app="myApp" ng-controller="myCtrl">
-
-                <label> Seleccionar Arduino:  </label>
-                
-                <select ng-model="selectedName" ng-options="item.id as item.valor for item in vm.arduinos"></select>
-
-                <script>
-                    var app = angular.module('myApp', []);
-                    app.controller('myCtrl', function ($scope) {
-                        $scope.names = dto.Id_Arduino;
-                    });
-                </script>
-
+            <label> Seleccionar Arduino:  </label>
+                <select ng-model="vm.dto.Id_Arduino" ng-options="item.id as item.valor for item in vm.arduinos"></select>
             </div>
 
             <div>
                 <label> Seleccionar Señal:  </label>
-                <select id="Id_Senal" class="dropdown">
-                    <option value="1"> Test1 </option>
-                    <option value="2"> Test2 </option>
-                </select>
+                <select ng-model="vm.dto.Id_Id_Senal" ng-options="item.id as item.valor for item in vm.senal"></select>
             </div>
             <div>
-                <label>Retardo para informar Alarma:  </label> <input />
+                <label>Retardo para informar Alarma:  </label> <input ng-model="vm.dto.n_delay_alarma" />
             </div>
             <div class="botones">
                 <button class="btn btn-primary" ng-click="vm.Agregar_Delay();"><span class="glyphicon glyphicon-save"> </span> Guardar</button>
