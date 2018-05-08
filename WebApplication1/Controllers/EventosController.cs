@@ -94,6 +94,7 @@ namespace WebApplication1.Controllers
             notificacion.Valor = evento.Valor;
             notificacion.Fecha_Notificacion = TimeZoneInfo.ConvertTime(DateTime.Now, TimeZoneInfo.FindSystemTimeZoneById("Argentina Standard Time"));
             RepositorioNotificaciones.Guardar(notificacion);
+           
             enviarCorreoNotificacion(notificacion);
         }
 
@@ -126,9 +127,34 @@ namespace WebApplication1.Controllers
         public static void enviarCorreoNotificacion(DtoNotificaciones dto)
         {
 
+            String descripcionSenal = RepositorioNotificaciones.ObtenerDescripcionSenal(dto);
+            String mensaje = "";
+            if (descripcionSenal == "LUZ")
+            {
+                if (dto.Valor == 1)
+                {
+                    mensaje = "Se ha normalizado el suministro de energía eléctrica.";
+                }
+                else
+                {
+                    mensaje = "Se ha interrumpido el suministro de energía eléctrica.";
+                }
+            }
+            if (descripcionSenal == "GAS")
+            {
+                if (dto.Valor < 500)
+                {
+                    mensaje = "Se ha detectado una pérdida de gas.";
+                }
+                else
+                {
+                    mensaje = "El nivel de gas en el ambiente, esta dentro de las condiciones normales.";
+                }
+            }
+
             MailMessage mail = new MailMessage();
             mail.From = new System.Net.Mail.MailAddress("someesmarthome@gmail.com");
-
+            mail.Subject = "Notificación SMART-HOME";
             SmtpClient smtp = new SmtpClient();
             smtp.Port = 587;   //  465 
             smtp.EnableSsl = true;
@@ -137,18 +163,21 @@ namespace WebApplication1.Controllers
             smtp.Credentials = new NetworkCredential("someesmarthome@gmail.com", "viaje1234");
             smtp.Host = "smtp.gmail.com";
             //Hay que parametrizar las cuentas a enviar, y los mensajes segun señal y valor
-            mail.To.Add(new MailAddress("diegocampos0909@gmail.com"));
+             mail.To.Add(new MailAddress("diegocampos0909@gmail.com"));
+            //mail.To.Add(new MailAddress("francoluna@gmail.com"));
             mail.IsBodyHtml = true;
-      
+
             string st = @"<html>
-<head>
-<title>Querido vecino</title>
-</head>
-<body> 
-<h1>Volvio la luz</h1>
-<p>Smart-Home</p>
-</body>
-</html>";
+                            <head>
+                            <title>Querido vecino</title>
+                            </head>
+                            <body> 
+                            <h1>";
+                st += mensaje;
+                 st+=@"</h1>
+                            <p>Smart-Home</p>
+                            </body>
+                            </html>";
             mail.Body = st;
             smtp.Send(mail);
 

@@ -5,6 +5,8 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Data;
 using System.Data.SqlClient;
+using System.Net.Mail;
+using System.Net;
 using DTO;
 using AccesoDatos;
 namespace Negocio
@@ -114,6 +116,60 @@ namespace Negocio
             }
 
         }
+
+        public static String ObtenerDescripcionSenal(DtoNotificaciones dtoNuevo)
+        {
+
+            /* SET QUOTED_IDENTIFIER ON
+ GO
+
+     CREATE PROCEDURE[dbo].[PR_SENAL_L] @ID_SENAL int
+ AS
+ BEGIN
+     SET NOCOUNT ON;
+
+         SELECT V_DESCRIPCION
+             FROM T_SENAL t WHERE t.ID_SENAL=@ID_SENAL
+
+    END
+ GO
+ */
+            String salida="";
+            Acceso acceso = new Acceso();
+            try
+            {
+                acceso.conectarBD();
+                acceso.storedProcedure("PR_SENAL_L");
+               
+                acceso.agregarParametros("id_senal", dtoNuevo.Id_Senal);
+                SqlDataReader leerBD = acceso.leerDatos();
+                while (leerBD.Read())
+                {
+                    //Creo una entidad para guardar lo que viene de la 
+                    DtoConfiguracion evento = new DtoConfiguracion();
+                    salida = (String)leerBD["v_descripcion"];
+                   
+                }
+            }
+            catch (Exception ex)
+            {
+                var a = "Error message: " + ex.Message;
+                if (ex.InnerException != null)
+                {
+                    a = a + " Inner exception: " + ex.InnerException.Message;
+                }
+                a = a + " Stack trace: " + ex.StackTrace;
+                System.ArgumentException bdEX = new System.ArgumentException("Mensaje: " + a, ex);
+                throw bdEX;
+            }
+            finally
+            {
+                acceso.closeConexion();
+            }
+            return salida;
+
+        }
+
 
     }
 }

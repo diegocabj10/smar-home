@@ -47,8 +47,8 @@ namespace Negocio
            AS
              BEGIN
              SET NOCOUNT ON;
-                 SELECT MAX(N_DELAY_ALARMA)
-                     FROM T_CONF_ARDUINO t WHERE t.ID_SENAL=@ID_SENAL AND t.ID_ARDUINO=@ID_ARDUINO
+                  SELECT ISNULL( (SELECT MAX(N_DELAY_ALARMA)
+                     FROM T_CONF_ARDUINO t WHERE t.ID_SENAL=@ID_SENAL AND t.ID_ARDUINO=@ID_ARDUINO), -1 )
             END
             */
 
