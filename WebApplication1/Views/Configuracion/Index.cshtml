@@ -1,27 +1,26 @@
 ﻿@section Scripts {
     <script src="~/Scripts/ConfiguracionController.js"></script>
 }
-    <form novalidate name="myForm" ng-app="myApp" ng-controller="myCtrl as vm">
-        <div>
-            <label> Seleccionar Arduino:  </label>
-            <select name="Id_Arduino" class="form-control" ng-model="vm.Dto.Id_Arduino" ng-options="item.id as item.valor for item in vm.arduinos" required></select>
-            <span class="alert-danger" ng-show="myForm.Id_Arduino.$error.required && vm.guardado">Debe seleccionar un arduino</span>
-        </div>
-        <div>
-            <label> Seleccionar Señal:  </label>
-            <select name="Id_Senal" class="form-control" ng-model="vm.Dto.Id_Senal" ng-options="item.id as item.valor for item in vm.senales" required></select>
-            <span class="alert-danger" ng-show="myForm.Id_Senal.$error.required && vm.guardado">Debe seleccionar una señal</span>
-        </div>
-        <div>
-            <label>Retardo para informar Alarma:</label>
-            <input name="n_delay_alarma" class="form-control" type="number" min="0" max="5" ng-model="vm.Dto.n_delay_alarma" required />
-            <span class="alert-danger" ng-show="myForm.n_delay_alarma.$error.required && vm.guardado">Debe Ingresar un valor</span>
-        </div>
+<form novalidate name="myForm" ng-app="myApp" ng-controller="myCtrl as vm">
+    <div>
+        <label> Seleccionar Arduino:  </label>
+        <select name="Id_Arduino" class="form-control" ng-model="vm.Dto.Id_Arduino" ng-options="item.id as item.valor for item in vm.arduinos" required></select>
+        <span class="alert-danger" ng-show="myForm.Id_Arduino.$error.required && vm.guardado">Debe seleccionar un arduino</span>
+    </div>
+    <div>
+        <label> Seleccionar Señal:  </label>
+        <select name="Id_Senal" class="form-control" ng-model="vm.Dto.Id_Senal" ng-options="item.id as item.valor for item in vm.senales" required></select>
+        <span class="alert-danger" ng-show="myForm.Id_Senal.$error.required && vm.guardado">Debe seleccionar una señal</span>
+    </div>
+    <div>
+        <label>Retardo para informar Alarma en minutos:</label>
+        <input name="n_delay_alarma" class="form-control" type="number" min="0" max="5" ng-model="vm.Dto.n_delay_alarma" required />
+        <span class="alert-danger" ng-show="myForm.n_delay_alarma.$error.required && vm.guardado">Debe Ingresar un valor</span>
+    </div>
 
-        <div class="botones">
-            <button class="btn btn-primary" ng-click="vm.Dto.Id_Arduino={name: 'not in list', shade:'other'}; vm.Dto.Id_Senal={name: 'not in list', shade:'other'}; vm.Dto.n_delay_alarma={value:'0'}"><span class="glyphicon glyphicon-remove"> </span> Cancelar</button>
-                
-            <button class="btn btn-primary" ng-click="vm.guardado=true; myForm.$valid && vm.Guardar();"><span class="glyphicon glyphicon-save"> </span> Guardar</button>
-        </div>
-    </form>
+    <div class="botones">
+
+        <button class="btn btn-primary" ng-click="vm.guardado=true; myForm.$valid && vm.Guardar();"><span class="glyphicon glyphicon-save"> </span> Guardar</button>
+    </div>
+</form>
 

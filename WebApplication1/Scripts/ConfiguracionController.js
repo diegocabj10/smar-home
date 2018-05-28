@@ -17,8 +17,10 @@ myApp.controller('myCtrl', ['$scope', '$http', '$interval',
 
 
         vm.Guardar = function () {
-        
-            $http.post('/Configuracion/Guardar', { DtoConfig: vm.Dto }); //Esto apunta directamente al controller con el mismo nombre de metodo, fijate que recibe un parametro DtoConf, es el que estas pasando y solo resuelve el bindeo
+
+            $http.post('/Configuracion/Guardar', { DtoConfig: vm.Dto })
+                .then(function (response) { alert("Se guardo con exito"); }
+                ); //Esto apunta directamente al controller con el mismo nombre de metodo, fijate que recibe un parametro DtoConf, es el que estas pasando y solo resuelve el bindeo
         };
     }
 ]);
