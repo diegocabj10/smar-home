@@ -1,0 +1,22 @@
+﻿
+@section Scripts {
+    <script src="/Scripts/InquilinoController.js"></script>
+}
+    <form novalidate name="myForm" ng-app="myApp" ng-controller="myCtrl as vm">
+        <div>
+            <label>Agregar texto:</label>
+            <textarea class="form-control"
+                      cols="20"
+                      id="t_texto_bd"
+                      name="t_texto_bd"
+                      ng-model="vm.Dto.V_TextoCompleto"
+                      rows="10">1;JUAN;PEREZ;j@g.com 1;PEDRO;GOMEZ;p@g.com</textarea>
+        </div>
+        
+        <div class="botones">
+            <button class="btn btn-primary" ng-click="vm.Guardar();"><span class="glyphicon glyphicon-save"> </span> Insertar Inquilinos</button>
+        </div>
+    </form>
+
+
+
