@@ -134,9 +134,6 @@ namespace Negocio
                 acceso.closeConexion();
             }
             return salida;
-
         }
-
-
     }
 }

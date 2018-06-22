@@ -14,13 +14,6 @@ namespace AccesoDatos
             private SqlDataReader leerBD = null;
             private SqlCommand ejecutarComandos = null;
             private SqlParameter parametroUsuario = null;
-
-            /// <summary>
-            ///Inicia conexion con la BD, si la bd no esta disponible devuelve un null,
-            ///previamente cerrandola
-            /// </summary>
-            /// <returns></returns>
-
             public SqlConnection conectarBD()
             {
                 try
@@ -94,8 +87,6 @@ namespace AccesoDatos
                 return leerBD;
 
             }
-
-
         public void executeNonQuery()
         {
             ejecutarComandos.ExecuteNonQuery();

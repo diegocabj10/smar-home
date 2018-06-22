@@ -41,7 +41,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="RepositorioConfiguraciones.cs" />
-    <Compile Include="RepositorioInquilinos.cs" />
     <Compile Include="RepositorioNotificaciones.cs" />
     <Compile Include="RepositorioEventos.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

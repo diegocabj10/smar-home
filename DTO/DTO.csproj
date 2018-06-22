@@ -42,7 +42,6 @@
   <ItemGroup>
     <Compile Include="DtoConfiguracion.cs" />
     <Compile Include="DtoEventos.cs" />
-    <Compile Include="DtoInquilinos.cs" />
     <Compile Include="DtoNotificaciones.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
