@@ -14,14 +14,6 @@ namespace Negocio
     {
         public static void InsertarInquilinos(DtoInquilinos dtoInquilino)
         {
-
-            //CREATE PROCEDURE pr_InsertatInquilinos_g @ID_EDIFICIO int, @V_NOMBRE string, @V_APELLIDO string,  @V_MAIL string,  AS
-            //    BEGIN
-            //    SET NOCOUNT ON
-            //    INSERT INTO T_INQUILINO(ID_EDIFICIO, V_NOMBRE, V_APELLIDO, V_MAIL)
-            //    VALUES(@ID_EDIFICIO, @V_NOMBRE, @V_APELLIDO, @V_MAIL);
-            //END
-
             Acceso acceso = new Acceso();
             try
             {

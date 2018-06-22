@@ -15,18 +15,9 @@ namespace Negocio
     {
 
 
-       
+
         public static List<DtoNotificaciones> ObtenerNotificaciones()
         {
-            //            CREATE PROCEDURE PR_NOTIFICACIONES_SF
-            //AS
-            //BEGIN
-            //    SET NOCOUNT ON;
-            //            SELECT t.ID_ARDUINO, t.ID_EVENTO,t.ID_SENAL, s.V_DESCRIPCION V_Descripcion_Senal, t.VALOR, t.FECHA_EVENTO fecha_notificacion
-            //            FROM T_EVENTO t Join T_SENAL s on t.ID_SENAL = s.ID_SENAL
-
-            //    END
-
             List<DtoNotificaciones> listaNotificaciones = new List<DtoNotificaciones>();
             Acceso acceso = new Acceso();
             try
@@ -39,16 +30,11 @@ namespace Negocio
                 {
                     //Creo una entidad para guardar lo que viene de la 
                     DtoNotificaciones notificacion = new DtoNotificaciones();
-                    
+
                     notificacion.Id_Arduino = (int)leerBD["id_arduino"];
                     notificacion.V_Descripcion_Senal = leerBD["V_Descripcion_Senal"].ToString();
                     notificacion.Valor = (int)leerBD["valor"];
                     if (leerBD["fecha_notificacion"] != DBNull.Value) { notificacion.Fecha_Notificacion = (DateTime)leerBD["fecha_notificacion"]; }
-                    //    cliente.pais = leerBD["descripcion"].ToString();
-                    //  cliente.telefono = (int)leerBD["telefono"];
-                    // if (leerBD["email"] != DBNull.Value) { cliente.email = leerBD["email"].ToString(); }
-                    //  cliente.fecha_nacimiento = (DateTime)leerBD["fecha_nac"];
-                    //cliente.promo_mail = (Boolean)leerBD["promo_mail"];
                     listaNotificaciones.Add(notificacion);
                 }
 
@@ -63,12 +49,8 @@ namespace Negocio
                 }
 
                 a = a + " Stack trace: " + ex.StackTrace;
-
                 System.ArgumentException bdEX = new System.ArgumentException("Mensaje: " + a, ex);
-
-
                 throw bdEX;
-
             }
 
             finally
@@ -119,28 +101,13 @@ namespace Negocio
 
         public static String ObtenerDescripcionSenal(DtoNotificaciones dtoNuevo)
         {
-
-            /* SET QUOTED_IDENTIFIER ON
- GO
-
-     CREATE PROCEDURE[dbo].[PR_SENAL_L] @ID_SENAL int
- AS
- BEGIN
-     SET NOCOUNT ON;
-
-         SELECT V_DESCRIPCION
-             FROM T_SENAL t WHERE t.ID_SENAL=@ID_SENAL
-
-    END
- GO
- */
-            String salida="";
+            String salida = "";
             Acceso acceso = new Acceso();
             try
             {
                 acceso.conectarBD();
                 acceso.storedProcedure("PR_SENAL_L");
-               
+
                 acceso.agregarParametros("id_senal", dtoNuevo.Id_Senal);
                 SqlDataReader leerBD = acceso.leerDatos();
                 while (leerBD.Read())
@@ -148,7 +115,7 @@ namespace Negocio
                     //Creo una entidad para guardar lo que viene de la 
                     DtoConfiguracion evento = new DtoConfiguracion();
                     salida = (String)leerBD["v_descripcion"];
-                   
+
                 }
             }
             catch (Exception ex)
